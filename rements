@@ -5,7 +5,7 @@ import threading
 import argparse
 import time
 
-# Create a cool banner
+# Create a banner for the program
 banner = """
  _____                ______       _
 |  __ \              |  ____|     | |
@@ -15,13 +15,15 @@ banner = """
 |_|  \_\___|_| |_| |_|______|_| |_|\__|___/
 """
 
+# Print the banner and program information
 print(banner)
 print("Created by Frederick Abraham")
-print("         ")
 print("Facebook account: https://www.facebook.com/profile.php?id=100091418762784")
-print("       ")
-print("If you run rements without argument it will run wizard mode automatically To see list of commands Type rements -h or --help")
-# Define the available commands
+print("")
+print("If you run rements without argument it will run wizard mode automatically")
+print("To see list of commands Type rements -h or --help")
+
+# Define the available commands and their descriptions
 commands = {
     '-u': 'Specify the target URL',
     '-w': 'Specify the number of threads',
@@ -40,7 +42,7 @@ parser.add_argument('-v', '--verbose', action='store_true', help='Enable verbose
 parser.add_argument('command', choices=list(commands.keys()), nargs='?', default=None)
 args = parser.parse_args()
 
-# Handle command
+# Handle the specified command
 if args.command is not None:
     if args.command in commands:
         print(f"Command: {args.command}")
@@ -50,13 +52,18 @@ if args.command is not None:
         print("Invalid command")
         exit(1)
 
-# Get values from command-line arguments or user input
+# Get the values for the target URL, number of threads, and number of requests per thread
+# from the command-line arguments or user input
 target_url = args.url if args.url else input("Enter the target URL: ")
 num_threads = args.threads if args.threads else int(input("Enter the number of threads: "))
 num_requests = args.requests if args.requests else int(input("Enter the number of requests per thread: "))
 verbose = args.verbose
 
 def send_requests():
+    """
+    Send HTTP requests to the target URL using a session object to maintain a connection pool.
+    Add a small delay between requests to increase aggressiveness.
+    """
     session = requests.Session()
     session.headers = {
         'Connection': 'keep-alive',
