@@ -21,4 +21,4 @@ Also has A GUI interface with a pinger to check your success
 
 ## Creator
 This tool was created by Frederick Abraham.
-- Facebook Account: [Frederick Abraham](https://www.facebook.com/profile.php?id=100091418762784)
+- Facebook Account: [Frederick Abraham](https://www.facebook.com/hacker.737984)
